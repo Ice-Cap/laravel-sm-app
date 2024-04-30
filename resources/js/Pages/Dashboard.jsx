@@ -1,10 +1,23 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Post from '@/Components/post/Post';
 
 export default function Dashboard({ auth }) {
     const [posts, setPosts] = useState([]);
+    const { data, setData } = useForm({
+        content: '',
+        userId: auth?.user?.id
+    });
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        axios.post('/api/posts', data).then(() => {
+            setData('content', '');
+            fetchAllPosts();
+        });
+    }
 
     useEffect(() => {
         fetchAllPosts();
@@ -14,24 +27,6 @@ export default function Dashboard({ auth }) {
         let result = await fetch('/api/posts');
         result = await result.json();
         setPosts(result);
-    }
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        await fetch('/api/posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-            body: JSON.stringify({
-                content: formData.get('content'),
-                userId: auth.user.id
-            })
-        });
-        fetchAllPosts();
     }
 
     return (
@@ -46,7 +41,13 @@ export default function Dashboard({ auth }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="heading">Add post</div>
                         <form onSubmit={handleSubmit} className="add-post-form">
-                            <textarea name="content" id="content" placeholder="Content" />
+                            <textarea
+                                name="content"
+                                id="content"
+                                placeholder="Content"
+                                value={data.content}
+                                onChange={(e) => setData('content', e.target.value)}
+                            />
                             <input type="submit" value="Submit"></input>
                         </form>
                     </div>
@@ -61,6 +62,7 @@ export default function Dashboard({ auth }) {
                         content={post.content}
                         userId={post.user_id}
                         postId={post.id}
+                        auth={auth}
                     />)}
                 </div>
             </div>

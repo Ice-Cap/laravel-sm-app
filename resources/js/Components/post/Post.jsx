@@ -3,18 +3,19 @@ import { Link, useForm } from '@inertiajs/react';
 import Comment from '@/Components/post/Comment';
 
 function Post(props) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData } = useForm({
         content: '',
         postId: props?.postId,
-        userId: props?.auth.user.id
+        userId: props?.auth?.user?.id
     });
 
     async function handleSubmit(event) {
         event.preventDefault();
 
-        post('/comment');
-
-        props.getPost();
+        axios.post('/comment', data).then(() => {
+            setData('content', '');
+            props.getPost();
+        });
     }
 
     return (
