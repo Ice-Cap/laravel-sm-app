@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Comment;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,5 +44,28 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/comment', function (Request $request) {
+    $comment = new Comment();
+    $comment->content = $request->content;
+    $comment->user_id = $request->userId;
+    $comment->post_id = $request->postId;
+    $comment->save();
+
+    return success($comment);
+})->middleware('auth');
+
+
+function success(mixed $data, $code = 200, array $headers = []) {
+    $headers['X-Inertia'] = 'true';
+
+    return response()->json($data, $code, $headers);
+}
+
+function error(mixed $data, $code = 500, array $headers = []) {
+    $headers['X-Inertia'] = 'true';
+
+    return response()->json($data, $code, $headers);
+}
 
 require __DIR__.'/auth.php';

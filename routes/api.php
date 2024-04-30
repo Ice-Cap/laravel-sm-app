@@ -19,18 +19,23 @@ use App\Models\Comment;
 |
 */
 
+/**
+ * User routes.
+
+ */
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::get('user/{user}', function (User $user) {
 
     return response()->json($user);
 });
 
 /**
- * Get a post by it's ID.
+ * Post routes.
+
  */
+
 Route::get('post/{post}', function (Post $post) {
     $post->username = $post->user->name;
     $post->comments = $post->comments->all();
@@ -69,12 +74,13 @@ Route::controller(PostController::class)->group(function () {
     Route::post('/posts', 'create');
 });
 
-Route::post('/comment', function (Request $request) {
-    $comment = new Comment();
-    $comment->content = $request->content;
-    $comment->user_id = $request->userId;
-    $comment->post_id = $request->postId;
-    $comment->save();
+/**
+ * Comment routes.
+
+ */
+
+Route::delete('/comment/{comment}', function (Comment $comment) {
+    $comment->delete();
 
     return response()->json($comment);
 });

@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import Comment from '@/Components/post/Comment';
 
 function Post(props) {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        content: '',
+        postId: props?.postId,
+        userId: props?.auth.user.id
+    });
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const formData = new FormData(event.target);
-        await fetch('/api/comment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${props?.auth.user.token}`
-            },
-            body: JSON.stringify({
-                content: formData.get('content'),
-                userId: props?.auth.user.id,
-                postId: props?.postId
-            })
-        });
+
+        post('/comment');
 
         props.getPost();
     }
@@ -41,7 +34,13 @@ function Post(props) {
                 <div className="py-2">Comments:</div>
                 {props.comments.map((comment) => <Comment comment={comment} key={comment.id} />)}
                 <form onSubmit={handleSubmit} className="add-post-form">
-                    <textarea name="content" id="content" placeholder="Add comment" />
+                    <textarea
+                        name="content"
+                        id="content"
+                        placeholder="Add comment"
+                        value={data.content}
+                        onChange={(e) => setData('content', e.target.value)}
+                    />
                     <input type="submit" value="Submit"></input>
                 </form>
             </div>}
