@@ -1,11 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Post from '@/Components/post/Post';
+import Comment from '@/Components/post/Comment';
 
 export default function ViewPost({ auth }) {
     const postId = window.location.pathname.split('/').pop();
     const [post, setPost] = useState();
+    const { data, setData } = useForm({
+        content: '',
+        postId: postId,
+        userId: auth?.user?.id
+    });
 
     useEffect(() => {
         getPost();
@@ -17,6 +23,18 @@ export default function ViewPost({ auth }) {
         setPost(result);
     }
 
+    async function addComment(event) {
+        event.preventDefault();
+
+        axios.post('/api/comment', data).then(() => {
+            setData('content', '');
+            getPost();
+        });
+    }
+
+    if (post) {
+        post.postId = post.id;
+    }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -26,15 +44,24 @@ export default function ViewPost({ auth }) {
 
             <div className="py-12">
                 <Post
-                    comments={post?.comments}
-                    key={post?.id}
-                    username={post?.username}
-                    content={post?.content}
-                    userId={post?.user_id}
-                    postId={post?.id}
+                    post={post}
                     auth={auth}
                     getPost={getPost}
                 />
+                {post?.comments && <div className="comments p-6">
+                <div className="py-2">Comments:</div>
+                {post?.comments.map((comment) => <Comment comment={comment} key={comment.id} />)}
+                <form onSubmit={addComment} className="add-post-form">
+                    <textarea
+                        name="content"
+                        id="content"
+                        placeholder="Add comment"
+                        value={data.content}
+                        onChange={(e) => setData('content', e.target.value)}
+                    />
+                    <input type="submit" value="Submit"></input>
+                </form>
+            </div>}
             </div>
         </AuthenticatedLayout>
     );

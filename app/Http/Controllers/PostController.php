@@ -19,7 +19,7 @@ class PostController extends Controller
     {
         $posts = DB::table('users')
             ->join('posts','posts.user_id','=','users.id')
-            ->select('posts.*', 'users.name')
+            ->select('posts.*', 'users.name AS username')
             ->orderBy('posts.created_at', 'desc')
             ->get();
 

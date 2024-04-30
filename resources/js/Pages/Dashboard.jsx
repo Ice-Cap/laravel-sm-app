@@ -56,14 +56,16 @@ export default function Dashboard({ auth }) {
                     <h2 className="feed-heading">
                         Feed:
                     </h2>
-                    {posts.map((post) => <Post
-                        key={post.id}
-                        username={post.name}
-                        content={post.content}
-                        userId={post.user_id}
-                        postId={post.id}
-                        auth={auth}
-                    />)}
+                    {posts.map((post) => {
+                        post.userId = post.user_id;
+                        post.postId = post.id;
+                        return <Post
+                            key={post.id}
+                            post={post}
+                            auth={auth}
+                        />
+                    }
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

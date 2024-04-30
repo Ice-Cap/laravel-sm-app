@@ -38,13 +38,15 @@ export default function UserPage({ auth }) {
                     <h2 className="feed-heading">
                         {username}'s posts:
                     </h2>
-                    {userPosts.map((post) => <Post
-                        key={post.id}
-                        username={post.username}
-                        content={post.content}
-                        userId={post.user_id}
-                        postId={post.id}
-                    />)}
+                    {userPosts.map((post) => {
+                        post.userId = post.user_id;
+                        post.postId = post.id;
+                        return <Post
+                            key={post.id}
+                            post={post}
+                            auth={auth}
+                        />
+                    })}
                 </div>
             </div>
         </AuthenticatedLayout>
