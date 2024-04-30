@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.post {
+    background-color: #fff;
+    padding: 10px;
+    margin: 15px 10px;
+}
+
+.post .user {
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+}
+
+.post-links {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 30px 10px;
+}
+
+.feed-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 30px 10px;
+}
+
+.add-post-form {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.add-post-form textarea {
+    margin-right: 10px;
+    width: 100%;
+}
+.add-post-form input[type="submit"] {
+    background-color: rgb(40, 149, 105);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    width: 100px;
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
+.comments {
+    margin: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.comments .comment {
+    margin: 10px 0;
+    background-color: #fff;
+    padding: 5px;
+}
+
+.comment .user {
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+}
+
+.content {
+    margin: 10px;
+}
