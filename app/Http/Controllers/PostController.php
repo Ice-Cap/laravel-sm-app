@@ -38,4 +38,11 @@ class PostController extends Controller
 
         return response()->json($post);
     }
+
+    public function delete(Post $post)
+    {
+        $post->delete();
+
+        return response()->json($post);
+    }
 }

@@ -18,6 +18,13 @@ function Post(props) {
         });
     }
 
+    async function handleDelete() {
+        axios.delete(`/api/post/${props?.postId}`).then(() => {
+            window.location.reload()
+        });
+    }
+
+    const ownsPost = props?.auth?.user?.id === props?.userId;
     return (
         <>
             <div className="post">
@@ -29,6 +36,7 @@ function Post(props) {
                 </div>
                 <div className="post-links">
                     {!props.comments && <Link href={`/post/${props?.postId}`}>View comments</Link>}
+                    {ownsPost && <button onClick={handleDelete}>Delete post</button>}
                 </div>
             </div>
             {props.comments && <div className="comments p-6">

@@ -70,6 +70,8 @@ Route::controller(PostController::class)->group(function () {
     Route::get('/posts/first', 'getFirstPost');
 
     Route::post('/posts', 'create');
+
+    Route::delete('/post/{post}', 'delete');
 })->middleware('auth:sanctum');
 
 /**
