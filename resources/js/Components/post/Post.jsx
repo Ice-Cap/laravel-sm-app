@@ -12,7 +12,7 @@ function Post(props) {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        axios.post('/comment', data).then(() => {
+        axios.post('/api/comment', data).then(() => {
             setData('content', '');
             props.getPost();
         });
