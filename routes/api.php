@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,20 +77,6 @@ Route::controller(PostController::class)->group(function () {
 
 /**
  * Comment routes.
-
  */
-Route::delete('/comment/{comment}', function (Comment $comment) {
-    $comment->delete();
-
-    return response()->json($comment);
-})->middleware('auth:sanctum');
-Route::post('/comment', function (Request $request) {
-    $comment = new Comment();
-    $comment->content = $request->content;
-    $comment->user_id = $request->userId;
-    $comment->post_id = $request->postId;
-    $comment->save();
-
-    return response()->json($comment);
-})->middleware('auth:sanctum');
-
+Route::apiResource('comments', CommentController::class)
+    ->middleware('auth:sanctum');

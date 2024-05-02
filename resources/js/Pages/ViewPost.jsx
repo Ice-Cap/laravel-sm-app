@@ -26,7 +26,7 @@ export default function ViewPost({ auth }) {
     async function addComment(event) {
         event.preventDefault();
 
-        axios.post('/api/comment', data).then(() => {
+        axios.post('/api/comments', data).then(() => {
             setData('content', '');
             getPost();
         });
@@ -50,7 +50,12 @@ export default function ViewPost({ auth }) {
                 />
                 {post?.comments && <div className="comments p-6">
                 <div className="py-2">Comments:</div>
-                {post?.comments.map((comment) => <Comment comment={comment} key={comment.id} />)}
+                {post?.comments.map((comment) => <Comment
+                    comment={comment}
+                    key={comment.id}
+                    auth={auth}
+                    getPost={getPost}
+                />)}
                 <form onSubmit={addComment} className="add-post-form">
                     <textarea
                         name="content"
