@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -35,6 +36,8 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
+        Gate::authorize('user-comment', $comment);
+
         return response()->json([
             'message' => 'Feature not available'
         ]);
@@ -45,6 +48,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        Gate::authorize('user-comment', $comment);
+
         $comment->delete();
 
         return response()->json($comment);

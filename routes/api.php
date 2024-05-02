@@ -32,7 +32,6 @@ Route::get('user/{user}', function (User $user) {
     return response()->json($user);
 })->middleware('auth:sanctum');
 
-
 /**
  * Get all posts for a user.
  */
