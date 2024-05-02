@@ -18,7 +18,7 @@ export default function ViewPost({ auth }) {
     }, []);
 
     async function getPost() {
-        let result = await fetch(`/api/post/${postId}`);
+        let result = await fetch(`/api/posts/${postId}`);
         result = await result.json();
         setPost(result);
     }
@@ -34,6 +34,7 @@ export default function ViewPost({ auth }) {
 
     if (post) {
         post.postId = post.id;
+        post.userId = post.user_id;
     }
     return (
         <AuthenticatedLayout

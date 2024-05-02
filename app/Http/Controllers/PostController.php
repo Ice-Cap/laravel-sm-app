@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function getFirstPost()
-    {
-        $post = Post::first();
-        return response()->json($post);
-    }
-
-    public function all()
+    /**
+     * Get all posts.
+     */
+    public function index(Request $request)
     {
         $posts = DB::table('users')
             ->join('posts','posts.user_id','=','users.id')
@@ -26,7 +23,36 @@ class PostController extends Controller
         return response()->json( $posts );
     }
 
-    public function create(Request $request)
+    /**
+     * Get post by id.
+     */
+    public function show(Post $post)
+    {
+        $post->username = $post->user->name;
+        $post->comments = $post->comments->all();
+
+        foreach ($post->comments as $comment) {
+            $comment->username = $comment->user->name;
+        }
+
+        return response()->json($post);
+    }
+
+    /**
+     * Update post content.
+     */
+    public function update(Request $request, Post $post)
+    {
+        $post->content = $request->content;
+        $post->save();
+
+        return response()->json($post);
+    }
+
+    /**
+     * Save new post.
+     */
+    public function store(Request $request)
     {
         $userId = $request->userId;
         $user = User::find($userId);
@@ -39,7 +65,10 @@ class PostController extends Controller
         return response()->json($post);
     }
 
-    public function delete(Post $post)
+    /**
+     * Delete post.
+     */
+    public function destroy(Post $post)
     {
         $post->delete();
 

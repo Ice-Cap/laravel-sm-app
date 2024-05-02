@@ -32,20 +32,7 @@ Route::get('user/{user}', function (User $user) {
     return response()->json($user);
 })->middleware('auth:sanctum');
 
-/**
- * Post routes.
 
- */
-Route::get('post/{post}', function (Post $post) {
-    $post->username = $post->user->name;
-    $post->comments = $post->comments->all();
-
-    foreach ($post->comments as $comment) {
-        $comment->username = $comment->user->name;
-    }
-
-    return response()->json($post);
-});
 /**
  * Get all posts for a user.
  */
@@ -64,19 +51,13 @@ Route::get('user/{user}/posts', function (User $user) {
 });
 
 /**
- * Routes that use PostController.
+ * Posts.
  */
-Route::controller(PostController::class)->group(function () {
-    Route::get('/posts', 'all');
-    Route::get('/posts/first', 'getFirstPost');
-
-    Route::post('/posts', 'create');
-
-    Route::delete('/post/{post}', 'delete');
-})->middleware('auth:sanctum');
+Route::apiResource('posts', PostController::class)
+    ->middleware('auth:sanctum');
 
 /**
- * Comment routes.
+ * Comments.
  */
 Route::apiResource('comments', CommentController::class)
     ->middleware('auth:sanctum');

@@ -9,7 +9,7 @@ function Post(props) {
     }
 
     async function handleDelete() {
-        axios.delete(`/api/post/${post?.postId}`).then(() => {
+        axios.delete(`/api/posts/${post?.postId}`).then(() => {
             window.location.reload()
         });
     }
