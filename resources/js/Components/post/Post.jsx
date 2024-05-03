@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from '@inertiajs/react';
-import Comment from '@/Components/post/Comment';
 
 function Post(props) {
     const post = props.post ?? null;
     if (!post) {
         return <div>No post found</div>;
     }
+    const ownsPost = props?.auth?.user?.id === post?.userId;
 
     async function handleDelete() {
+        if (!ownsPost) {
+            return;
+        }
+
         axios.delete(`/api/posts/${post?.postId}`).then(() => {
             window.location.reload()
         });
     }
 
-    const ownsPost = props?.auth?.user?.id === post?.userId;
     return (
         <div className="post">
             <div className="user">

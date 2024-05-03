@@ -26,6 +26,10 @@ export default function ViewPost({ auth }) {
     async function addComment(event) {
         event.preventDefault();
 
+        if (!data.content) {
+            return;
+        }
+
         axios.post('/api/comments', data).then(() => {
             setData('content', '');
             getPost();

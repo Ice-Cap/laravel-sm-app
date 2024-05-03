@@ -6,10 +6,8 @@ import Post from '@/Components/post/Post';
 export default function UserPage({ auth }) {
     const [userPosts, setUserPosts] = useState([]);
     const userId = window.location.pathname.split('/').pop();
-    const [user, setUser] = useState();
 
     useEffect(() => {
-        getUser();
         getPostsForUser();
     }, []);
 
@@ -17,12 +15,6 @@ export default function UserPage({ auth }) {
         let result = await fetch(`/api/user/${userId}/posts`);
         result = await result.json();
         setUserPosts(result);
-    }
-
-    async function getUser() {
-        let result = await fetch(`/api/user/${userId}`);
-        result = await result.json();
-        setUser(result);
     }
 
     const username = userPosts[0]?.username || 'User';

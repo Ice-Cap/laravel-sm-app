@@ -10,13 +10,18 @@ export default function Dashboard({ auth }) {
         userId: auth?.user?.id
     });
 
-    async function handleSubmit(event) {
+    async function addPost(event) {
         event.preventDefault();
 
-        axios.post('/api/posts', data).then(() => {
-            setData('content', '');
-            fetchAllPosts();
-        });
+        if (!data.content) {
+            return;
+        }
+
+        axios.post('/api/posts', data)
+            .then(() => {
+                setData('content', '');
+                fetchAllPosts();
+            });
     }
 
     useEffect(() => {
@@ -40,7 +45,7 @@ export default function Dashboard({ auth }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="heading">Add post</div>
-                        <form onSubmit={handleSubmit} className="add-post-form">
+                        <form onSubmit={addPost} className="add-post-form">
                             <textarea
                                 name="content"
                                 id="content"

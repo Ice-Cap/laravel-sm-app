@@ -58,7 +58,6 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $userId = $request->userId;
-        $user = User::find($userId);
 
         $post = new Post();
         $post->content = $request->content;
