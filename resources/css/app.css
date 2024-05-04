@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --primary-color: rgb(40, 149, 105);
+    --primary-color-light: rgba(40, 149, 105, 0.93);
+    --primary-color-x-light: rgba(231, 237, 235, 0.95);
+}
+
 .post {
     background-color: #fff;
     padding: 10px;
@@ -33,6 +39,9 @@
     margin: 30px 10px;
 }
 
+.post-form-container {
+    background-color: var(--primary-color-x-light);
+}
 .add-post-form {
     margin: 10px;
     display: flex;
@@ -43,7 +52,7 @@
     width: 100%;
 }
 .add-post-form input[type="submit"] {
-    background-color: rgb(40, 149, 105);
+    background-color: var(--primary-color);
     padding: 5px 10px;
     border-radius: 5px;
     color: #fff;
@@ -52,15 +61,20 @@
     align-self: flex-end;
 }
 
+input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: var(--primary-color-light);
+}
+
 .comments {
     margin: 10px;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: var(--primary-color-x-light);
 }
 
 .comments .comment {
     margin: 10px 0;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 5px;
 }
 
@@ -72,4 +86,20 @@
 
 .content {
     margin: 10px;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+}
+
+.primary-button:hover {
+    background-color: var(--primary-color-light);
+}
+
+textarea {
+    border: 1px solid rgb(167, 172, 169);
+}
+
+nav {
+    background-color: rgb(225, 236, 230);
 }
