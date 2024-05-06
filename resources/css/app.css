@@ -118,3 +118,9 @@ nav a.active-link {
 a {
     color: var(--primary-color-dark) !important;
 }
+
+.loading {
+    margin: 30px auto;
+    width: fit-content;
+    color: var(--primary-color-dark);
+}

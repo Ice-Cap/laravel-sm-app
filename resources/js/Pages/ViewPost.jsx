@@ -55,32 +55,34 @@ export default function ViewPost({ auth }) {
         >
             <Head title="View Post" />
 
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                {loading && <div className='loading'>Loading...</div>}
-                {!loading && <Post
-                    post={post}
-                    auth={auth}
-                    getPost={getPost}
-                />}
-                {post?.comments && <div className="comments p-6">
-                    <div className="py-2">Comments:</div>
-                    {post?.comments.map((comment) => <Comment
-                        comment={comment}
-                        key={comment.id}
+            <div className="py-6">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {loading && <div className='loading'>Loading...</div>}
+                    {!loading && <Post
+                        post={post}
                         auth={auth}
                         getPost={getPost}
-                    />)}
-                    <form onSubmit={addComment} className="add-post-form">
-                        <textarea
-                            name="content"
-                            id="content"
-                            placeholder="Add comment"
-                            value={data.content}
-                            onChange={(e) => setData('content', e.target.value)}
-                        />
-                        <input type="submit" value="Submit"></input>
-                    </form>
-                </div>}
+                    />}
+                    {post?.comments && <div className="comments p-6">
+                        <div className="py-2">Comments:</div>
+                        {post?.comments.map((comment) => <Comment
+                            comment={comment}
+                            key={comment.id}
+                            auth={auth}
+                            getPost={getPost}
+                        />)}
+                        <form onSubmit={addComment} className="add-post-form">
+                            <textarea
+                                name="content"
+                                id="content"
+                                placeholder="Add comment"
+                                value={data.content}
+                                onChange={(e) => setData('content', e.target.value)}
+                            />
+                            <input type="submit" value="Submit"></input>
+                        </form>
+                    </div>}
+                </div>
             </div>
         </AuthenticatedLayout>
     );

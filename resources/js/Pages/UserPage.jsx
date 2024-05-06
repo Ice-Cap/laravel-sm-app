@@ -6,6 +6,7 @@ import Post from '@/Components/post/Post';
 export default function UserPage({ auth }) {
     const [userPosts, setUserPosts] = useState([]);
     const userId = window.location.pathname.split('/').pop();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getPostsForUser();
@@ -13,8 +14,15 @@ export default function UserPage({ auth }) {
 
     async function getPostsForUser() {
         let result = await fetch(`/api/user/${userId}/posts`);
-        result = await result.json();
+        if (result.ok) {
+            result = await result.json();
+        } else {
+            result = [];
+        }
+
         setUserPosts(result);
+
+        setLoading(false);
     }
 
     const username = userPosts[0]?.username || 'User';
@@ -25,12 +33,14 @@ export default function UserPage({ auth }) {
         >
             <Head title="User" />
 
-            <div className="py-12">
+            <div className="py-6">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <h2 className="feed-heading">
                         {username}'s posts:
                     </h2>
-                    {userPosts.map((post) => {
+                    {loading && <div className='loading'>Loading...</div>}
+
+                    {!loading && userPosts.map((post) => {
                         post.userId = post.user_id;
                         post.postId = post.id;
                         return <Post
