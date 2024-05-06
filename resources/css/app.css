@@ -4,27 +4,11 @@
 
 :root {
     --primary-color: rgb(40, 149, 105);
+    --primary-color-dark: rgb(0, 86, 52);
     --primary-color-light: rgba(40, 149, 105, 0.93);
-    --primary-color-x-light: rgba(231, 237, 235, 0.95);
-}
+    --primary-color-x-light: rgb(178, 217, 199);
 
-.post {
-    background-color: #fff;
-    padding: 10px;
-    margin: 15px 10px;
-}
-
-.post .user {
-    font-weight: bold;
-    font-size: 16px;
-    color: #000;
-}
-
-.post-links {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 12px;
+    --gray: rgb(194, 194, 194);
 }
 
 .heading {
@@ -39,8 +23,28 @@
     margin: 30px 10px;
 }
 
+.post {
+    background-color: #fff;
+    border: 1px solid var(--gray);
+    padding: 10px;
+    margin: 15px 10px;
+}
+.post .user {
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+}
+.post-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+}
 .post-form-container {
-    background-color: var(--primary-color-x-light);
+    background-color: #fff;
+    color: var(--primary-color-dark);
+    font-weight: bold;
+    border: 1px solid var(--primary-color-x-light);
 }
 .add-post-form {
     margin: 10px;
@@ -50,6 +54,8 @@
 .add-post-form textarea {
     margin-right: 10px;
     width: 100%;
+    font-weight: normal;
+    color: #000;
 }
 .add-post-form input[type="submit"] {
     background-color: var(--primary-color);
@@ -68,20 +74,21 @@ input[type="submit"]:hover {
 
 .comments {
     margin: 10px;
-    padding: 10px;
-    background-color: var(--primary-color-x-light);
+    padding: 15px;
 }
-
 .comments .comment {
-    margin: 10px 0;
+    margin: 15px 10px;
     background-color: #ffffff;
-    padding: 5px;
+    padding: 8px;
+    border: 1px solid var(--gray);
 }
-
 .comment .user {
     font-weight: bold;
     font-size: 16px;
     color: #000;
+}
+.comments textarea {
+    margin-top: 30px;
 }
 
 .content {
@@ -101,5 +108,13 @@ textarea {
 }
 
 nav {
-    background-color: rgb(225, 236, 230);
+    background-color: rgb(232 242 238);
+}
+
+nav a.active-link {
+    border-color: var(--primary-color) !important;
+}
+
+a {
+    color: var(--primary-color-dark) !important;
 }
