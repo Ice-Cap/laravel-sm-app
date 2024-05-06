@@ -6,6 +6,7 @@ import Comment from '@/Components/post/Comment';
 
 export default function ViewPost({ auth }) {
     const postId = window.location.pathname.split('/').pop();
+    const [loading, setLoading] = useState(true);
     const [post, setPost] = useState();
     const { data, setData } = useForm({
         content: '',
@@ -19,8 +20,15 @@ export default function ViewPost({ auth }) {
 
     async function getPost() {
         let result = await fetch(`/api/posts/${postId}`);
-        result = await result.json();
+        if (result.ok) {
+            result = await result.json();
+        } else {
+            result = null;
+        }
+
         setPost(result);
+
+        setLoading(false);
     }
 
     async function addComment(event) {
@@ -48,11 +56,12 @@ export default function ViewPost({ auth }) {
             <Head title="View Post" />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <Post
+                {loading && <div className='loading'>Loading...</div>}
+                {!loading && <Post
                     post={post}
                     auth={auth}
                     getPost={getPost}
-                />
+                />}
                 {post?.comments && <div className="comments p-6">
                     <div className="py-2">Comments:</div>
                     {post?.comments.map((comment) => <Comment
