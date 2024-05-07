@@ -61,6 +61,10 @@ class PostLikeController extends Controller
      */
     public function destroy(PostLike $postLike)
     {
-        //
+        $result = $postLike->delete();
+
+        return response()->json([
+            'success' => $result
+        ]);
     }
 }

@@ -8,7 +8,7 @@ function Post(props) {
     }
     const ownsPost = props?.auth?.user?.id === post?.userId;
 
-    async function handleDelete() {
+    function handleDelete() {
         if (!ownsPost) {
             return;
         }
@@ -18,12 +18,20 @@ function Post(props) {
         });
     }
 
-    async function likePost() {
+    function likePost() {
         axios.post(`/api/post-likes`, {postId: post.postId}).then((response) => {
             props.refresh();
         });
     }
 
+    function unlikePost() {
+        const likeId = post.likes.find(like => like.user_id === props.auth.user.id).id;
+        axios.delete('/api/post-likes/' + likeId).then((response) => {
+            props.refresh();
+        });
+    }
+
+    const hasLikedPost = post.likes.find(like => like.user_id === props.auth.user.id);
     return (
         <div className="post">
             <div className="user">
@@ -36,7 +44,8 @@ function Post(props) {
                 {post.likes.length} likes
             </div>
             <div className="post-links">
-                <button onClick={likePost}>Like</button>
+                {!hasLikedPost && <button onClick={likePost}>Like</button>}
+                {hasLikedPost && <button onClick={unlikePost}>Unlike</button>}
                 {!post.comments && <Link href={`/post/${post?.postId}`}>View comments</Link>}
             </div>
             {ownsPost && <button onClick={handleDelete} className="delete-post">Delete post</button>}

@@ -10,9 +10,7 @@ export default function Dashboard({ auth }) {
         userId: auth?.user?.id
     });
 
-    console.log(posts);
-
-    async function addPost(event) {
+    function addPost(event) {
         event.preventDefault();
 
         if (!data.content) {
