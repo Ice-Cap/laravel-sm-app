@@ -31,7 +31,7 @@ function Post(props) {
         });
     }
 
-    const hasLikedPost = post.likes.find(like => like.user_id === props.auth.user.id);
+    const hasLikedPost = post?.likes?.find(like => like.user_id === props.auth.user.id);
     return (
         <div className="post">
             <div className="user">

@@ -37,6 +37,7 @@ Route::get('user/{user}/posts', function (User $user) {
 
     foreach ($posts as $post) {
         $post->username = $user->name;
+        $post->likes = $post->likes->all();
     }
 
     return response()->json($posts);

@@ -47,6 +47,7 @@ export default function UserPage({ auth }) {
                             key={post.id}
                             post={post}
                             auth={auth}
+                            refresh={getPostsForUser}
                         />
                     })}
                 </div>
