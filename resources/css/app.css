@@ -30,6 +30,9 @@
     padding: 10px;
     margin: 15px 10px;
 }
+.content {
+    padding: 20px 15px;
+}
 .post .user {
     font-weight: bold;
     font-size: 16px;
@@ -38,7 +41,7 @@
 .post-links {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 12px;
 }
 .post-links button {
@@ -93,10 +96,14 @@ input[type="submit"]:hover {
     padding: 15px;
 }
 .comments .comment {
-    margin: 15px 10px;
+    position: relative;
+    margin: 15px 5px;
     background-color: #ffffff;
     padding: 8px;
     border: 1px solid var(--gray);
+}
+.comment .content {
+    padding: 10px 15px;
 }
 .comment .user {
     font-weight: bold;
@@ -105,10 +112,6 @@ input[type="submit"]:hover {
 }
 .comments textarea {
     margin-top: 30px;
-}
-
-.content {
-    padding: 20px 15px;
 }
 
 .primary-button {

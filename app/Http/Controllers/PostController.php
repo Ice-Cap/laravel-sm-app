@@ -39,6 +39,7 @@ class PostController extends Controller
 
         foreach ($post->comments as $comment) {
             $comment->username = $comment->user->name;
+            $comment->likes = $comment->likes->all();
         }
 
         foreach ( $post->likes as $like ) {

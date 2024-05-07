@@ -69,7 +69,7 @@ export default function ViewPost({ auth }) {
                             comment={comment}
                             key={comment.id}
                             auth={auth}
-                            getPost={getPost}
+                            refresh={getPost}
                         />)}
                         <form onSubmit={addComment} className="add-post-form">
                             <textarea
