@@ -15,13 +15,17 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = DB::table('users')
-            ->join('posts','posts.user_id','=','users.id')
-            ->select('posts.*', 'users.name AS username')
-            ->orderBy('posts.created_at', 'desc')
-            ->get();
+        $posts = Post::all()->sortByDesc('created_at');
+        foreach ($posts as $post)
+        {
+            $post->likes = $post->likes->all();
+            $post->username = $post->user->name;
+        }
 
-        return response()->json( $posts );
+        $postsArr = $posts->toArray();
+        $result = array_values($postsArr);
+
+        return response()->json($result);
     }
 
     /**
@@ -31,9 +35,14 @@ class PostController extends Controller
     {
         $post->username = $post->user->name;
         $post->comments = $post->comments->all();
+        $post->likes = $post->likes->all();
 
         foreach ($post->comments as $comment) {
             $comment->username = $comment->user->name;
+        }
+
+        foreach ( $post->likes as $like ) {
+            $like->username = $like->user->name;
         }
 
         return response()->json($post);

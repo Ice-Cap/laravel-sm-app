@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Models\User;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,10 @@ Route::apiResource('posts', PostController::class)
  * Comments.
  */
 Route::apiResource('comments', CommentController::class)
+    ->middleware('auth:sanctum');
+
+/**
+ * Post Likes.
+ */
+Route::apiResource('post-likes', PostLikeController::class)
     ->middleware('auth:sanctum');

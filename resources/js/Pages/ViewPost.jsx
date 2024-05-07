@@ -61,7 +61,7 @@ export default function ViewPost({ auth }) {
                     {!loading && <Post
                         post={post}
                         auth={auth}
-                        getPost={getPost}
+                        refresh={getPost}
                     />}
                     {post?.comments && <div className="comments p-6">
                         <div className="py-2">Comments:</div>

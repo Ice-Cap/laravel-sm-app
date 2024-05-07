@@ -10,6 +10,8 @@ export default function Dashboard({ auth }) {
         userId: auth?.user?.id
     });
 
+    console.log(posts);
+
     async function addPost(event) {
         event.preventDefault();
 
@@ -68,6 +70,7 @@ export default function Dashboard({ auth }) {
                             key={post.id}
                             post={post}
                             auth={auth}
+                            refresh={fetchAllPosts}
                         />
                     }
                     )}

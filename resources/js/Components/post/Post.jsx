@@ -14,7 +14,13 @@ function Post(props) {
         }
 
         axios.delete(`/api/posts/${post?.postId}`).then(() => {
-            window.location.reload()
+            props.refresh();
+        });
+    }
+
+    async function likePost() {
+        axios.post(`/api/post-likes`, {postId: post.postId}).then((response) => {
+            props.refresh();
         });
     }
 
@@ -26,8 +32,12 @@ function Post(props) {
             <div className="content">
                 <div>{post.content}</div>
             </div>
+            <div className="likes">
+                {post.likes.length} likes
+            </div>
             <div className="post-links">
                 {!post.comments && <Link href={`/post/${post?.postId}`}>View comments</Link>}
+                <button onClick={likePost}>Like</button>
                 {ownsPost && <button onClick={handleDelete}>Delete post</button>}
             </div>
         </div>
