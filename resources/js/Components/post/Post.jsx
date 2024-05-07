@@ -36,10 +36,10 @@ function Post(props) {
                 {post.likes.length} likes
             </div>
             <div className="post-links">
-                {!post.comments && <Link href={`/post/${post?.postId}`}>View comments</Link>}
                 <button onClick={likePost}>Like</button>
-                {ownsPost && <button onClick={handleDelete}>Delete post</button>}
+                {!post.comments && <Link href={`/post/${post?.postId}`}>View comments</Link>}
             </div>
+            {ownsPost && <button onClick={handleDelete} className="delete-post">Delete post</button>}
         </div>
     );
 }
