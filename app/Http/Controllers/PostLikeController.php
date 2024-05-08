@@ -26,8 +26,8 @@ class PostLikeController extends Controller
 
         if (!$userId || !$postId) {
             return response()->json([
-                'success' => false
-            ]);
+                'message' => 'Invalid data provided.'
+            ], 400);
         }
 
         $like = new PostLike();
