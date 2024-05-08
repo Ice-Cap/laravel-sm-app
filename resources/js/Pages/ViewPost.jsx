@@ -38,13 +38,19 @@ export default function ViewPost({ auth }) {
         event.preventDefault();
 
         if (!data.content) {
+            setErrorMessage("Comment content can't be empty");
             return;
         }
 
-        axios.post('/api/comments', data).then(() => {
-            setData('content', '');
-            getPost();
-        });
+        axios.post('/api/comments', data)
+            .then(() => {
+                setData('content', '');
+                getPost();
+            })
+            .catch((error) => {
+                error = error?.response?.data?.message || 'An error occurred';
+                setErrorMessage(error);
+            });
     }
 
     if (post) {

@@ -2,27 +2,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Post from '@/Components/post/Post';
+import ErrorModal from '@/Components/ErrorModal';
 
 export default function Dashboard({ auth }) {
     const [posts, setPosts] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
     const { data, setData } = useForm({
         content: '',
         userId: auth?.user?.id
     });
-
-    function addPost(event) {
-        event.preventDefault();
-
-        if (!data.content) {
-            return;
-        }
-
-        axios.post('/api/posts', data)
-            .then(() => {
-                setData('content', '');
-                fetchAllPosts();
-            });
-    }
 
     useEffect(() => {
         fetchAllPosts();
@@ -33,6 +21,25 @@ export default function Dashboard({ auth }) {
         result = await result.json() ?? [];
 
         setPosts(result);
+    }
+
+    function addPost(event) {
+        event.preventDefault();
+
+        if (!data.content) {
+            setErrorMessage("Post content can't be empty");
+            return;
+        }
+
+        axios.post('/api/posts', data)
+            .then(() => {
+                setData('content', '');
+                fetchAllPosts();
+            })
+            .catch((error) => {
+                error = error?.response?.data?.message || 'An error occurred';
+                setErrorMessage(error);
+            });
     }
 
     return (
@@ -75,6 +82,8 @@ export default function Dashboard({ auth }) {
                     )}
                 </div>
             </div>
+
+            <ErrorModal show={errorMessage} message={errorMessage} close={() => setErrorMessage(null)} />
         </AuthenticatedLayout>
     );
 }

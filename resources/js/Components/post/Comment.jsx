@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
+import ErrorModal from '@/Components/ErrorModal';
 
 function Comment(props) {
     const [errorMessage, setErrorMessage] = useState(null);
 
     const comment = props.comment;
+    const ownsComment = props?.auth?.user?.id === comment?.user_id;
 
-    const ownsComment = props?.auth?.user?.id === props.comment?.user_id;
-
-    function handleDelete() {
+    function deleteComment() {
         if (!ownsComment) {
             return;
         }
 
-        axios.delete(`/api/comments/${props.comment.id}`)
+        axios.delete(`/api/comments/${comment.id}`)
             .then(() => {
                 props.refresh();
             })
@@ -24,7 +24,7 @@ function Comment(props) {
     }
 
     function likeComment() {
-        axios.post(`/api/comment-likes`, {commentId: props.comment.id})
+        axios.post(`/api/comment-likes`, {commentId: comment.id})
             .then((response) => {
                 props.refresh();
             })
@@ -35,7 +35,7 @@ function Comment(props) {
     }
 
     function unlikeComment() {
-        const likeId = props.comment.likes.find(like => like.user_id === props.auth.user.id).id;
+        const likeId = comment?.likes?.find(like => like.user_id === props.auth.user.id).id;
         axios.delete('/api/comment-likes/' + likeId)
             .then((response) => {
                 props.refresh();
@@ -48,12 +48,12 @@ function Comment(props) {
 
     const hasLikedComment = comment?.likes?.find(like => like.user_id === props.auth.user.id);
     return (
-        <div key={props.comment.id} className="comment">
+        <div key={comment.id} className="comment">
             <div className="user">
-                <Link href={`/user/${props.comment.user_id}`}>{props.comment?.username}</Link>
+                <Link href={`/user/${comment.user_id}`}>{comment?.username}</Link>
             </div>
             <div className="content">
-                {props.comment.content}
+                {comment.content}
             </div>
             <div className="likes">
                 {comment.likes.length} likes
@@ -62,7 +62,9 @@ function Comment(props) {
                 {!hasLikedComment && <button onClick={likeComment}>Like</button>}
                 {hasLikedComment && <button onClick={unlikeComment}>Unlike</button>}
             </div>
-            {ownsComment && <button className="delete-post" onClick={handleDelete}>Delete comment</button>}
+            {ownsComment && <button className="delete-post" onClick={deleteComment}>Delete comment</button>}
+
+            <ErrorModal show={errorMessage} message={errorMessage} close={() => setErrorMessage(null)} />
         </div>
     );
 }
