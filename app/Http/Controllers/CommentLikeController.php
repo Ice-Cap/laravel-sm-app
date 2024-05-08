@@ -26,8 +26,8 @@ class CommentLikeController extends Controller
 
         if (!$userId || !$commentId) {
             return response()->json([
-                'success' => false
-            ]);
+                'message' => 'Invalid data provided.'
+            ], 400);
         }
 
         $like = new CommentLike();

@@ -67,7 +67,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = $request->userId;
+        $userId = $request->user()->id ?? null;
+        if (!isset($userId)) {
+            return response()->json([
+                'message' => 'Invalid data provided.'
+            ], 400);
+        }
 
         $post = new Post();
         $post->content = $request->content;

@@ -3,9 +3,11 @@ import { Head, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Post from '@/Components/post/Post';
 import Comment from '@/Components/post/Comment';
+import ErrorModal from '@/Components/ErrorModal';
 
 export default function ViewPost({ auth }) {
     const postId = window.location.pathname.split('/').pop();
+    const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [post, setPost] = useState();
     const { data, setData } = useForm({
@@ -24,6 +26,7 @@ export default function ViewPost({ auth }) {
             result = await result.json();
         } else {
             result = null;
+            setErrorMessage('There was an error fetching the post');
         }
 
         setPost(result);
@@ -84,6 +87,8 @@ export default function ViewPost({ auth }) {
                     </div>}
                 </div>
             </div>
+
+            <ErrorModal show={errorMessage} message={errorMessage} close={() => setErrorMessage(null)} />
         </AuthenticatedLayout>
     );
 }

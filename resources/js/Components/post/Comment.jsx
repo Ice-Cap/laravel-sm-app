@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
 
 function Comment(props) {
+    const [errorMessage, setErrorMessage] = useState(null);
+
     const comment = props.comment;
 
     const ownsComment = props?.auth?.user?.id === props.comment?.user_id;
@@ -11,22 +13,37 @@ function Comment(props) {
             return;
         }
 
-        axios.delete(`/api/comments/${props.comment.id}`).then(() => {
-            props.refresh();
-        });
+        axios.delete(`/api/comments/${props.comment.id}`)
+            .then(() => {
+                props.refresh();
+            })
+            .catch((error) => {
+                error = error?.response?.data?.message || 'An error occurred';
+                setErrorMessage(error);
+            });
     }
 
     function likeComment() {
-        axios.post(`/api/comment-likes`, {commentId: props.comment.id}).then((response) => {
-            props.refresh();
-        });
+        axios.post(`/api/comment-likes`, {commentId: props.comment.id})
+            .then((response) => {
+                props.refresh();
+            })
+            .catch((error) => {
+                error = error?.response?.data?.message || 'An error occurred';
+                setErrorMessage(error);
+            });
     }
 
     function unlikeComment() {
         const likeId = props.comment.likes.find(like => like.user_id === props.auth.user.id).id;
-        axios.delete('/api/comment-likes/' + likeId).then((response) => {
-            props.refresh();
-        });
+        axios.delete('/api/comment-likes/' + likeId)
+            .then((response) => {
+                props.refresh();
+            })
+            .catch((error) => {
+                error = error?.response?.data?.message || 'An error occurred';
+                setErrorMessage(error);
+            });
     }
 
     const hasLikedComment = comment?.likes?.find(like => like.user_id === props.auth.user.id);

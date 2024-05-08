@@ -30,7 +30,8 @@ export default function Dashboard({ auth }) {
 
     async function fetchAllPosts() {
         let result = await fetch('/api/posts');
-        result = await result.json();
+        result = await result.json() ?? [];
+
         setPosts(result);
     }
 
