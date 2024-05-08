@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import ErrorModal from '@/Components/ErrorModal';
+import LikeButton from '@/Components/post/LikeButton';
 
 function Comment(props) {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -59,8 +60,11 @@ function Comment(props) {
                 {comment.likes.length} likes
             </div>
             <div className="post-links">
-                {!hasLikedComment && <button onClick={likeComment}>Like</button>}
-                {hasLikedComment && <button onClick={unlikeComment}>Unlike</button>}
+                <LikeButton
+                    hasLiked={hasLikedComment}
+                    like={likeComment}
+                    unlike={unlikeComment}
+                />
             </div>
             {ownsComment && <button className="delete-post" onClick={deleteComment}>Delete comment</button>}
 
