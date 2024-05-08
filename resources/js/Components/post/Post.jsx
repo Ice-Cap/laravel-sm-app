@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import ErrorModal from '@/Components/ErrorModal';
 import LikeButton from '@/Components/post/LikeButton';
+import Likes from '@/Components/post/Likes';
 
 function Post(props) {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -60,16 +61,14 @@ function Post(props) {
             <div className="content">
                 <div>{post.content}</div>
             </div>
-            <div className="likes">
-                {post?.likes?.length} likes
-            </div>
+            <Likes likes={post?.likes} />
             <div className="post-links">
                 <LikeButton
                     hasLiked={hasLikedPost}
                     like={likePost}
                     unlike={unlikePost}
                 />
-                {!post.comments && <Link href={`/post/${post?.postId}`}>View comments</Link>}
+                {props.showCommentLink && <Link href={`/post/${post?.postId}`}>View comments</Link>}
             </div>
             {ownsPost && <button onClick={deletePost} className="delete-post">Delete post</button>}
             <ErrorModal show={errorMessage} message={errorMessage} close={() => setErrorMessage(null)} />

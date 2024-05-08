@@ -2,8 +2,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 import Post from '@/Components/post/Post';
+import ErrorModal from '@/Components/ErrorModal';
 
 export default function UserPage({ auth }) {
+    const [errorMessage, setErrorMessage] = useState(null);
     const [userPosts, setUserPosts] = useState([]);
     const userId = window.location.pathname.split('/').pop();
     const [loading, setLoading] = useState(true);
@@ -17,6 +19,7 @@ export default function UserPage({ auth }) {
         if (result.ok) {
             result = await result.json();
         } else {
+            setErrorMessage('No user/posts found');
             result = [];
         }
 
@@ -29,11 +32,12 @@ export default function UserPage({ auth }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">User: {username}</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">{username}</h2>}
         >
             <Head title="User" />
 
             <div className="py-6">
+                {errorMessage && <div className='not-found'>User not found</div>}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <h2 className="feed-heading">
                         {username}'s posts:
@@ -48,10 +52,13 @@ export default function UserPage({ auth }) {
                             post={post}
                             auth={auth}
                             refresh={getPostsForUser}
+                            showCommentLink={true}
                         />
                     })}
                 </div>
             </div>
+
+            <ErrorModal message={errorMessage} show={errorMessage} close={() => setErrorMessage(null)} />
         </AuthenticatedLayout>
     );
 }

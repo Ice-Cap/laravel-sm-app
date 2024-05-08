@@ -77,6 +77,7 @@ export default function Dashboard({ auth }) {
                             post={post}
                             auth={auth}
                             refresh={fetchAllPosts}
+                            showCommentLink={true}
                         />
                     }
                     )}
