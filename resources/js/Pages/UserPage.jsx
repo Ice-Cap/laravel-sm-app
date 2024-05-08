@@ -9,26 +9,50 @@ export default function UserPage({ auth }) {
     const [userPosts, setUserPosts] = useState([]);
     const userId = window.location.pathname.split('/').pop();
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        getPostsForUser();
+        getUser();
     }, []);
 
-    async function getPostsForUser() {
-        let result = await fetch(`/api/user/${userId}/posts`);
-        if (result.ok) {
-            result = await result.json();
-        } else {
-            setErrorMessage('No user/posts found');
-            result = [];
-        }
+    function getUser() {
+        axios.get(`/api/user/${userId}`)
+            .then((response) => {
+                setUser(response.data);
 
-        setUserPosts(result);
+                getPostsForUser();
+            })
+            .catch((error) => {
+                setErrorMessage('An error occurred while fetching user');
+            });
 
         setLoading(false);
     }
 
-    const username = userPosts[0]?.username || 'User';
+    function getPostsForUser() {
+        axios.get(`/api/user/${userId}/posts`)
+            .then((response) => {
+                setUserPosts(response.data);
+            })
+            .catch((error) => {
+                setErrorMessage('An error occurred while fetching user posts');
+            });
+
+        setLoading(false);
+    }
+
+
+    if (!user) {
+        return <AuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">User</h2>}
+        >
+                <Head title="Not found" />
+                {!user && <div className='not-found'>User not found</div>}
+        </AuthenticatedLayout>
+    }
+
+    const username = user.name;
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -37,7 +61,6 @@ export default function UserPage({ auth }) {
             <Head title="User" />
 
             <div className="py-6">
-                {errorMessage && <div className='not-found'>User not found</div>}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <h2 className="feed-heading">
                         {username}'s posts:
@@ -58,7 +81,12 @@ export default function UserPage({ auth }) {
                 </div>
             </div>
 
-            <ErrorModal message={errorMessage} show={errorMessage} close={() => setErrorMessage(null)} />
+            <ErrorModal
+                message={errorMessage}
+                show={errorMessage}
+                close={() => setErrorMessage(null)}
+                timeout={false}
+            />
         </AuthenticatedLayout>
     );
 }

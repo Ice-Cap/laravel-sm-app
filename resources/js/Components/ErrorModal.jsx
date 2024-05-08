@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-const ErrorModal = ({ show, message, close }) => {
+const ErrorModal = ({ show, message, close, timeout = 6000 }) => {
     if (!show) return null;
 
     useEffect(() => {
+        if (!timeout) {
+            return;
+        }
+
         const timer = setTimeout(() => {
             close();
-        }, 6000);
+        }, timeout);
 
         return () => clearTimeout(timer);
     }, []);
