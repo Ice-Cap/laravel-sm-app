@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CommentLike;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentLikeController extends Controller
 {
@@ -61,6 +62,8 @@ class CommentLikeController extends Controller
      */
     public function destroy(CommentLike $commentLike)
     {
+        Gate::authorize('user-owns-resource', $commentLike);
+
         $result = $commentLike->delete();
         return response()->json([
             'success' => $result

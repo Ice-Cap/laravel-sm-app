@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,12 +25,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('user-post', function (User $user, Post $post) {
-            return $user->id === $post->user_id;
-        });
+        Gate::define('user-owns-resource', function (User $user, Model $resource) {
+            if (!isset($resource->user_id) || !isset($user->id))
+            {
+                return false;
+            }
 
-        Gate::define('user-comment', function (User $user, Comment $comment) {
-            return $user->id === $comment->user_id;
+            return $user->id === $resource->user_id;
         });
     }
 }

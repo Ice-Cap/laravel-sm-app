@@ -36,7 +36,7 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        Gate::authorize('user-comment', $comment);
+        Gate::authorize('user-owns-resource', $comment);
 
         return response()->json([
             'message' => 'Feature not available'
@@ -48,7 +48,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        Gate::authorize('user-comment', $comment);
+        Gate::authorize('user-owns-resource', $comment);
 
         $comment->delete();
 

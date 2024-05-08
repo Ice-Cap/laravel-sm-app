@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PostLike;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostLikeController extends Controller
 {
@@ -61,6 +62,8 @@ class PostLikeController extends Controller
      */
     public function destroy(PostLike $postLike)
     {
+        Gate::authorize('user-owns-resource', $postLike);
+
         $result = $postLike->delete();
 
         return response()->json([

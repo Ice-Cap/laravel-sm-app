@@ -54,7 +54,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        Gate::authorize('user-post', $post);
+        Gate::authorize('user-owns-resource', $post);
 
         $post->content = $request->content;
         $post->save();
@@ -82,10 +82,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        Gate::authorize('user-post', $post);
+        Gate::authorize('user-owns-resource', $post);
 
-        $post->delete();
+        $result = $post->delete();
 
-        return response()->json($post);
+        return response()->json(['success' => $result]);
     }
 }
