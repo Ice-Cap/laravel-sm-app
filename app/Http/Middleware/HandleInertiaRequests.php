@@ -29,7 +29,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $request->user()->makeVisible(['email']);
+        $request?->user()?->makeVisible(['email']);
 
         return [
             ...parent::share($request),
