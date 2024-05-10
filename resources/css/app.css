@@ -14,6 +14,25 @@
     --red-light: rgb(251, 244, 244);
 }
 
+.text-primary {
+    color: var(--primary-color);
+}
+.text-primary-dark {
+    color: var(--primary-color-dark);
+}
+.text-primary-light {
+    color: var(--primary-color-light);
+}
+.text-gray {
+    color: var(--gray);
+}
+.text-red {
+    color: var(--red);
+}
+.text-red-light {
+    color: var(--red-light);
+}
+
 .heading {
     font-size: 20px;
     font-weight: bold;

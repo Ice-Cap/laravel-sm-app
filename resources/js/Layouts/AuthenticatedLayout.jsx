@@ -97,14 +97,16 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
+                    <div className="pt-4 pb-1 border-t border-gray-200 bg-white">
+                        <div className="px-0 border border-gray-200">
+                            <div className="px-4 py-1 font-medium text-base text-gray-800 bg-gray-50">{user.name}</div>
+                            <div className="px-5 pb-2 font-medium text-sm text-gray-500 bg-gray-50">{user.email}</div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('profile.edit')} as='button'>
+                                Profile
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>
